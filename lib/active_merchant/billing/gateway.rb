@@ -127,7 +127,7 @@ module ActiveMerchant #:nodoc:
 
       class_attribute :currencies_without_fractions, :currencies_with_three_decimal_places
       self.currencies_without_fractions = %w(BIF BYR CLP CVE DJF GNF HUF ISK JPY KMF KRW PYG RWF UGX VND VUV XAF XOF XPF)
-      self.currencies_with_three_decimal_places = %w()
+      self.currencies_with_three_decimal_places = %w(BHD KWD OMR RSD TND)
 
       class_attribute :homepage_url
       class_attribute :display_name
