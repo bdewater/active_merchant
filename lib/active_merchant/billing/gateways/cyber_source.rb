@@ -419,7 +419,7 @@ module ActiveMerchant #:nodoc:
       def add_line_item_data(xml, options)
         options[:line_items].each_with_index do |value, index|
           xml.tag! 'item', {'id' => index} do
-            xml.tag! 'unitPrice', localized_amount(value[:declared_value].to_i, options[:currency] || default_currency)
+            xml.tag! 'unitPrice', amount(value[:declared_value].to_i, options[:currency] || default_currency)
             xml.tag! 'quantity', value[:quantity]
             xml.tag! 'productCode', value[:code] || 'shipping_only'
             xml.tag! 'productName', value[:description]
@@ -439,7 +439,7 @@ module ActiveMerchant #:nodoc:
       def add_purchase_data(xml, money = 0, include_grand_total = false, options={})
         xml.tag! 'purchaseTotals' do
           xml.tag! 'currency', options[:currency] || currency(money)
-          xml.tag!('grandTotalAmount', localized_amount(money.to_i, options[:currency] || default_currency))  if include_grand_total
+          xml.tag!('grandTotalAmount', amount(money.to_i, options[:currency] || default_currency))  if include_grand_total
         end
       end
 
@@ -621,7 +621,7 @@ module ActiveMerchant #:nodoc:
           end
 
           xml.tag! 'status',            options[:subscription][:status]                         if options[:subscription][:status]
-          xml.tag! 'amount',            localized_amount(options[:subscription][:amount].to_i, options[:currency] || default_currency) if options[:subscription][:amount]
+          xml.tag! 'amount',            amount(options[:subscription][:amount].to_i, options[:currency] || default_currency) if options[:subscription][:amount]
           xml.tag! 'numberOfPayments',  options[:subscription][:occurrences]                    if options[:subscription][:occurrences]
           xml.tag! 'automaticRenew',    options[:subscription][:automatic_renew]                if options[:subscription][:automatic_renew]
           xml.tag! 'frequency',         options[:subscription][:frequency]                      if options[:subscription][:frequency]

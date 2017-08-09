@@ -200,7 +200,7 @@ module ActiveMerchant #:nodoc:
       def add_invoice(params, money, options, key = "Payment")
         currency_code = options[:currency] || currency(money)
         params[key] = {
-          'TotalAmount' => localized_amount(money, currency_code),
+          'TotalAmount' => amount(money, currency_code),
           'InvoiceReference' => truncate(options[:order_id], 50),
           'InvoiceNumber' => truncate(options[:invoice] || options[:order_id], 12),
           'InvoiceDescription' => truncate(options[:description], 64),

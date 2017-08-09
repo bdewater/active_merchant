@@ -242,7 +242,7 @@ module ActiveMerchant #:nodoc:
         currency = currency || currency(money)
         hash = {}
         hash[:currency] = currency
-        hash[:value]    = localized_amount(money, currency) if money
+        hash[:value]    = amount(money, currency) if money
         hash
       end
 

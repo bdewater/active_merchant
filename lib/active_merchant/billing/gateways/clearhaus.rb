@@ -122,7 +122,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_amount(post, amount, options)
-        post[:amount]   = localized_amount(amount, options[:currency] || default_currency)
+        post[:amount]   = amount(amount, options[:currency] || default_currency)
         post[:currency] = (options[:currency] || default_currency)
       end
 

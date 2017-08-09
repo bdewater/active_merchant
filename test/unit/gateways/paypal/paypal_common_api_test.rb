@@ -6,7 +6,7 @@ require 'nokogiri'
 class CommonPaypalGateway < ActiveMerchant::Billing::Gateway
   include ActiveMerchant::Billing::PaypalCommonAPI
   def currency(code); 'USD'; end
-  def localized_amount(num, code); num; end
+  def amount(num, code); num; end
   def commit(a, b); end
 end
 

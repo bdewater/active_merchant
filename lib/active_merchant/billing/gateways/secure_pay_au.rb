@@ -122,7 +122,7 @@ module ActiveMerchant #:nodoc:
 
         currency = options[:currency] || currency(money)
 
-        xml.tag! 'amount', localized_amount(money, currency)
+        xml.tag! 'amount', amount(money, currency)
         xml.tag! 'currency', currency
         xml.tag! 'purchaseOrderNo', options[:order_id].to_s.gsub(/[ ']/, '')
 

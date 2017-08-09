@@ -240,23 +240,28 @@ module ActiveMerchant #:nodoc:
         self.class.name.scan(/\:\:(\w+)Gateway/).flatten.first
       end
 
-      def amount(money)
+      def amount(money, currency = nil)
+        raise ArgumentError, 'money amount must be a positive Integer in the smallest fraction.' if money.is_a?(String)
         return nil if money.nil?
+
         cents = if money.respond_to?(:cents)
           ActiveMerchant.deprecated "Support for Money objects is deprecated and will be removed from a future release of ActiveMerchant. Please use an Integer value in cents"
           money.cents
         else
           money
         end
-
-        if money.is_a?(String)
-          raise ArgumentError, 'money amount must be a positive Integer in cents.'
-        end
+        currency ||= currency(money)
 
         if self.money_format == :cents
           cents.to_s
         else
-          sprintf("%.2f", cents.to_f / 100)
+          if non_fractional_currency?(currency)
+            sprintf("%.0f", cents.to_f)
+          elsif three_decimal_currency?(currency)
+            sprintf("%.3f", (cents.to_f / 100))
+          else
+            sprintf("%.2f", cents.to_f / 100)
+          end
         end
       end
 
@@ -266,25 +271,6 @@ module ActiveMerchant #:nodoc:
 
       def three_decimal_currency?(currency)
         self.currencies_with_three_decimal_places.include?(currency.to_s)
-      end
-
-      def localized_amount(money, currency)
-        amount = amount(money)
-
-        return amount unless non_fractional_currency?(currency) || three_decimal_currency?(currency)
-        if non_fractional_currency?(currency)
-          if self.money_format == :cents
-            sprintf("%.0f", amount.to_f / 100)
-          else
-            amount.split('.').first
-          end
-        elsif three_decimal_currency?(currency)
-          if self.money_format == :cents
-            amount.to_s
-          else
-            sprintf("%.3f", (amount.to_f / 10))
-          end
-        end
       end
 
       def currency(money)

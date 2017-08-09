@@ -223,7 +223,7 @@ module ActiveMerchant #:nodoc:
 
       def add_amount(xml, money, options)
         currency_code = options[:currency] || default_currency
-        xml.tag! 'DollarAmount', localized_amount(money, currency_code)
+        xml.tag! 'DollarAmount', amount(money, currency_code)
         xml.tag! 'Currency', currency_code
       end
 

@@ -77,14 +77,14 @@ module ActiveMerchant #:nodoc:
       def capture(money, authorization, options = {})
         post = {}
         capture_uri = "#{ENDPOINT}/#{CGI.escape(authorization)}/capture"
-        post[:amount] = localized_amount(money, currency(money))
+        post[:amount] = amount(money, currency(money))
 
         commit(capture_uri, post)
       end
 
       def refund(money, authorization, options = {})
         post = {}
-        post[:amount] = localized_amount(money, currency(money))
+        post[:amount] = amount(money, currency(money))
 
         commit(refund_uri(authorization), post)
       end
@@ -131,7 +131,7 @@ module ActiveMerchant #:nodoc:
 
       def add_amount(post, money, options = {})
         currency = options[:currency] || currency(money)
-        post[:amount] = localized_amount(money, currency)
+        post[:amount] = amount(money, currency)
         post[:currency] = currency.upcase
       end
 

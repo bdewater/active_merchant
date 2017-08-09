@@ -426,7 +426,7 @@ module ActiveMerchant #:nodoc:
           xml.tag! 'StartDate', date_to_iso(options[:start_date])
           xml.tag! 'EndDate', date_to_iso(options[:end_date]) unless options[:end_date].blank?
           add_optional_fields(xml, transaction_search_optional_fields, options)
-          xml.tag! 'Amount', localized_amount(options[:amount], currency_code), 'currencyID' => currency_code  unless options[:amount].blank?
+          xml.tag! 'Amount', amount(options[:amount], currency_code), 'currencyID' => currency_code  unless options[:amount].blank?
         end
       end
 
@@ -569,18 +569,18 @@ module ActiveMerchant #:nodoc:
 
       def add_payment_details(xml, money, currency_code, options = {})
         xml.tag! 'n2:PaymentDetails' do
-          xml.tag! 'n2:OrderTotal', localized_amount(money, currency_code), 'currencyID' => currency_code
+          xml.tag! 'n2:OrderTotal', amount(money, currency_code), 'currencyID' => currency_code
 
           # All of the values must be included together and add up to the order total
           if [:subtotal, :shipping, :handling, :tax].all?{ |o| options.has_key?(o) }
-            xml.tag! 'n2:ItemTotal', localized_amount(options[:subtotal], currency_code), 'currencyID' => currency_code
-            xml.tag! 'n2:ShippingTotal', localized_amount(options[:shipping], currency_code),'currencyID' => currency_code
-            xml.tag! 'n2:HandlingTotal', localized_amount(options[:handling], currency_code),'currencyID' => currency_code
-            xml.tag! 'n2:TaxTotal', localized_amount(options[:tax], currency_code), 'currencyID' => currency_code
+            xml.tag! 'n2:ItemTotal', amount(options[:subtotal], currency_code), 'currencyID' => currency_code
+            xml.tag! 'n2:ShippingTotal', amount(options[:shipping], currency_code),'currencyID' => currency_code
+            xml.tag! 'n2:HandlingTotal', amount(options[:handling], currency_code),'currencyID' => currency_code
+            xml.tag! 'n2:TaxTotal', amount(options[:tax], currency_code), 'currencyID' => currency_code
           end
 
-          xml.tag! 'n2:InsuranceTotal', localized_amount(options[:insurance_total], currency_code),'currencyID' => currency_code unless options[:insurance_total].blank?
-          xml.tag! 'n2:ShippingDiscount', localized_amount(options[:shipping_discount], currency_code),'currencyID' => currency_code unless options[:shipping_discount].blank?
+          xml.tag! 'n2:InsuranceTotal', amount(options[:insurance_total], currency_code),'currencyID' => currency_code unless options[:insurance_total].blank?
+          xml.tag! 'n2:ShippingDiscount', amount(options[:shipping_discount], currency_code),'currencyID' => currency_code unless options[:shipping_discount].blank?
           xml.tag! 'n2:InsuranceOptionOffered', options[:insurance_option_offered] if options.has_key?(:insurance_option_offered)
 
           xml.tag! 'n2:OrderDescription', options[:description] unless options[:description].blank?
@@ -695,7 +695,7 @@ module ActiveMerchant #:nodoc:
         if amount.to_i < 0 && non_fractional_currency?(currency_code)
           amount(amount).to_f.floor
         else
-          localized_amount(amount, currency_code)
+          amount(amount, currency_code)
         end
       end
     end

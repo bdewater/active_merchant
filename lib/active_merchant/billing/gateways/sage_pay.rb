@@ -207,7 +207,7 @@ module ActiveMerchant #:nodoc:
 
       def add_amount(post, money, options)
         currency = options[:currency] || currency(money)
-        add_pair(post, :Amount, localized_amount(money, currency), :required => true)
+        add_pair(post, :Amount, amount(money, currency), :required => true)
         add_pair(post, :Currency, currency, :required => true)
       end
 

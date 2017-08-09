@@ -192,7 +192,7 @@ module ActiveMerchant #:nodoc:
       def add_invoice(post, money, options)
         currency = options[:currency] || currency(money)
 
-        post[:a4] = localized_amount(money, currency)
+        post[:a4] = amount(money, currency)
         post[:a1] = generate_unique_id
         post[:a5] = currency
         post[:h9] = options[:order_id]

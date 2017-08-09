@@ -130,7 +130,7 @@ module ActiveMerchant #:nodoc:
               xml.tag! 'n2:ReturnURL', options[:return_url]
               xml.tag! 'n2:CancelURL', options[:cancel_return_url]
               if options[:max_amount]
-                xml.tag! 'n2:MaxAmount', localized_amount(options[:max_amount], currency_code), 'currencyID' => currency_code
+                xml.tag! 'n2:MaxAmount', amount(options[:max_amount], currency_code), 'currencyID' => currency_code
               end
               xml.tag! 'n2:ReqBillingAddress', options[:req_billing_address] ? '1' : '0'
               xml.tag! 'n2:NoShipping', options[:no_shipping] ? '1' : '0'
@@ -175,7 +175,7 @@ module ActiveMerchant #:nodoc:
                 options[:shipping_options].each do |shipping_option|
                   xml.tag! 'n2:FlatRateShippingOptions' do
                     xml.tag! 'n2:ShippingOptionIsDefault', shipping_option[:default]
-                    xml.tag! 'n2:ShippingOptionAmount', localized_amount(shipping_option[:amount], currency_code), 'currencyID' => currency_code
+                    xml.tag! 'n2:ShippingOptionAmount', amount(shipping_option[:amount], currency_code), 'currencyID' => currency_code
                     xml.tag! 'n2:ShippingOptionName', shipping_option[:name]
                   end
                 end
